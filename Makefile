@@ -1,2 +1,2 @@
 all:
-	g++ -std=c++17 main.cpp -lstdc++fs -lncurses -g
+	g++ -std=c++17 main.cpp file_tree_item.cpp -lstdc++fs -lncurses -g
