@@ -5,7 +5,7 @@ void tree_item_view<T>::refresh() {
     wclear(win);
     item_list.clear();
     draw_item(root, 0);
-    move(0,0);
+    wmove(win, 0,0);
 }
 
 template <typename T>
@@ -39,7 +39,7 @@ void tree_item_view<T>::draw_item(tree_item<T>* item, int depth) {
     std::string output = item->print_item(atts);
 
     { // Scoped atts
-        raii_attribs raii_atts(atts);
+        raii_attribs raii_atts(atts, win);
         wprintw(win, output.c_str());
         wprintw(win, "\n");
     }

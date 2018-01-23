@@ -24,12 +24,15 @@ int main(int argc, char *argv[]) {
     // Create root node and read directories into nodes
     auto root = file_tree_from_path(script_path); 
 
-    WINDOW* search_win;
-    WINDOW* main_win;
     int h, w;
+    getmaxyx(stdscr, h,w);
+    WINDOW* main_win = newwin(h -1,w,0,0);
+    WINDOW* search_win = newwin(1,w,h-1,0);
+    wprintw(search_win, std::string("search").c_str());
+    wrefresh(search_win);
 
     // Init treeview
-    file_tree_view tree(root.get(), stdscr, search_win);
+    file_tree_view tree(root.get(), main_win, search_win);
     tree.refresh();
 
     // Loop while input is recieved

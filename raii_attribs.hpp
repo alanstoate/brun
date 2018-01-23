@@ -7,14 +7,18 @@
 class raii_attribs
 {
 public:
-    raii_attribs (std::vector<int> attribs) : atts(attribs) {
-        for (auto& a : atts) attron(a);
+    raii_attribs (std::vector<int> attribs, WINDOW* window) : 
+        atts(attribs),
+        win(window)
+    {
+        for (auto& a : atts) wattron(win, a);
     }
 
     ~raii_attribs () {
-        for (auto& a : atts) attroff(a);
+        for (auto& a : atts) wattroff(win, a);
     }
 
 private:
      std::vector<int> atts;
+     WINDOW* win;
 };
