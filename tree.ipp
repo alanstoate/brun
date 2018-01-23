@@ -20,31 +20,22 @@ bool tree_item_view<T>::get_input() {
     int ch = getch();
     int y, x;
     getyx(win, y, x);
-
-    switch (ch) {
-        // quit
-        case 'q':
-            return false;
-            break;
-            // move down
-        case 'j':
-            if (y < item_list.size() -1)
-                move(++y, x);
-            break;
-            // move up 
-        case 'k':
-            move(--y, x);
-            break;
-            // select item 
-        case 'l':
-            item_list.at(y)->on_select();
-            refresh();
-            // Needed to return cursor value to previous pos after refresh
-            // TODO: find more elegant solution
-            move(y,0); 
-            break;
+    for (auto& f : input_functions) {
+        if (f.first == ch)
+            return f.second(y, x);
     }
     return true;
+
+}
+
+template <typename T>
+void tree_item_view<T>::add_input_rule(int ch, std::function<bool (int,int)> func) {
+    input_functions.push_back(std::make_pair(ch, func));
+}
+
+template <typename T>
+tree_item<T>* tree_item_view<T>::get_item_at_line(int y) {
+    return item_list.at(y); 
 }
 
 template <typename T>

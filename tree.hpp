@@ -7,12 +7,12 @@
 
 namespace brun {
 
-// Type T represents the the data store in each node  of the the tree
-// All resources are managed by the tree_item
+// Type T represents the the data store in each node of the tree
 template <typename T>
 class tree_item
 {
 public:
+    // Init tree item from instance of T 
     tree_item (T d) : data(d) {}
 
     // Adds a child to the tree
@@ -28,7 +28,10 @@ public:
 
     // Virtual functions required by derived classes to add functionality to
     // each tree
+    
+    // Value returned from this function will be printed on each line for each item
     virtual std::string print_item() = 0;
+    // Allows custom behaviour for selecting item
     virtual void on_select() = 0;
 
     // Return a copy of the data
@@ -56,16 +59,21 @@ public:
     void refresh(); 
 
     // Get input from the user
-    // uses vi like navigation
-    // TODO: Add custom input functionality
     bool get_input();
 
+    // Adds an event response as defined in func which will be called
+    // when ch is pressed
+    void add_input_rule(int ch, std::function<bool (int,int)> func);
 
-private:
-    tree_item<T>* root;
+    tree_item<T>* get_item_at_line(int y);
+
+protected:
     WINDOW* win;
+    tree_item<T>* root;
     std::vector<tree_item<T>*> item_list;
 
+private:
+    std::vector<std::pair<int, std::function<bool (int, int)>>> input_functions;
     void draw_item(tree_item<T>* item, int depth);
 };
 

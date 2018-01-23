@@ -5,13 +5,15 @@ namespace brun {
 file_tree_item::file_tree_item (fs::path n) : tree_item(n) {}
 
 std::string file_tree_item::print_item() {
-    return data.stem().string();
+    return data.stem().string() + data.extension().string();
 }
 
 void file_tree_item::on_select() {
+    // If item is directory, fold it
     if (fs::is_directory(data))
         folded = !folded;
     else {
+    // If item is not directory, execute script and exit
         clear();
         endwin();
         system(data.string().c_str());
@@ -19,14 +21,25 @@ void file_tree_item::on_select() {
     }
 }
 
-void read_dir(file_tree_item& n) {
+// Helper recursive function used by file_tree_from_path below
+bool read_dir(file_tree_item& n) {
+    bool found_sh = false;
     for (auto& d : fs::directory_iterator(n.get_data())) {
         auto node = std::make_unique<file_tree_item>(d.path());
-        if (fs::is_directory(d))
-            read_dir(*node);
-
-        n.add_child(std::move(node));
+        if (fs::is_directory(d)) {
+            // Only include directories that contain scripts
+            if (read_dir(*node)) {
+                n.add_child(std::move(node));
+            }
+        }
+        else if (d.path().extension().string() == ".sh") {
+            n.add_child(std::move(node));
+            found_sh = true;
+        }
     }
+
+    // found_sh will only be true if a bash script was in the directory
+    return found_sh;
 }
 
 std::unique_ptr<file_tree_item> file_tree_from_path(const fs::path& n) {

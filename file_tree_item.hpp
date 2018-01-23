@@ -19,6 +19,7 @@ public:
     void on_select() override;
 };
 
+// Creates a root tree_item from a given path
 std::unique_ptr<file_tree_item> file_tree_from_path(const fs::path& n);
 
 }
