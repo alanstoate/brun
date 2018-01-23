@@ -2,7 +2,7 @@
 
 namespace fs = std::experimental::filesystem;
 
-file_tree_view::file_tree_view (brun::file_tree_item* ti, WINDOW* win) : 
+file_tree_view::file_tree_view (file_tree_item* ti, WINDOW* win) : 
     tree_item_view(ti, win) 
 {
     add_input();

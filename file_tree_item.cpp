@@ -1,7 +1,5 @@
 #include "file_tree_item.hpp"
 
-namespace brun {
-
 file_tree_item::file_tree_item (fs::path n) : tree_item(n) {}
 
 std::string file_tree_item::print_item() {
@@ -46,5 +44,4 @@ std::unique_ptr<file_tree_item> file_tree_from_path(const fs::path& n) {
     auto root = std::make_unique<file_tree_item>(n);
     read_dir(*root);
     return std::move(root);
-}
 }

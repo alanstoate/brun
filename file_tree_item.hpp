@@ -1,12 +1,10 @@
 #pragma once
 
-#include "tree.hpp"
+#include "tree_item.hpp"
 #include <ncurses.h>
 #include <experimental/filesystem>
 
 namespace fs = std::experimental::filesystem;
-
-namespace brun {
 
 // Derived from tree item
 class file_tree_item : public tree_item<fs::path>
@@ -21,5 +19,3 @@ public:
 
 // Creates a root tree_item from a given path
 std::unique_ptr<file_tree_item> file_tree_from_path(const fs::path& n);
-
-}

@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
     noecho();
 
     // Create root node and read directories into nodes
-    auto root = brun::file_tree_from_path(fs::current_path()); 
+    auto root = file_tree_from_path(fs::current_path()); 
 
     // Init treeview
     file_tree_view tree(root.get(), stdscr);

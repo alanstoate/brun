@@ -1,12 +1,3 @@
-namespace brun {
-
-template <typename T>
-std::unique_ptr<tree_item<T>>& tree_item<T>::add_child(std::unique_ptr<tree_item<T>> t) 
-{
-    children.push_back(std::move(t));
-    return children.back();
-}
-
 template <typename T>
 void tree_item_view<T>::refresh() {
     move(0,0);
@@ -50,6 +41,4 @@ void tree_item_view<T>::draw_item(tree_item<T>* item, int depth) {
             draw_item(c.get(), depth + 1); 
         }
     }
-}
-
 }
