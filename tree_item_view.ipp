@@ -13,14 +13,14 @@ bool tree_item_view<T>::get_input() {
     getyx(win, y, x);
     for (auto& f : input_functions) {
         if (f.first == ch)
-            return f.second(y, x);
+            return f.second(y);
     }
     return true;
 
 }
 
 template <typename T>
-void tree_item_view<T>::add_input_rule(int ch, std::function<bool (int,int)> func) {
+void tree_item_view<T>::add_input_rule(int ch, std::function<bool (int)> func) {
     input_functions.push_back(std::make_pair(ch, func));
 }
 

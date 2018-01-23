@@ -2,15 +2,27 @@
 #include "file_tree_view.hpp"
 #include <experimental/filesystem>
 #include <memory>
+#include <iostream>
 #include <ncurses.h>
 
 int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        std::cout << "USAGE: brun <script directory>\n";
+        exit(0);
+    }
+
+    fs::path script_path(argv[1]);
+    if (!fs::exists(script_path)) {
+        std::cout << "ERROR: Directory does not exist\n";
+        exit(0);
+    }
+
     // Init
     initscr();
     noecho();
 
     // Create root node and read directories into nodes
-    auto root = file_tree_from_path(fs::current_path()); 
+    auto root = file_tree_from_path(script_path); 
 
     // Init treeview
     file_tree_view tree(root.get(), stdscr);

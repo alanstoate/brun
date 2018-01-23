@@ -24,7 +24,7 @@ public:
 
     // Adds an event response as defined in func which will be called
     // when ch is pressed
-    void add_input_rule(int ch, std::function<bool (int,int)> func);
+    void add_input_rule(int ch, std::function<bool (int)> func);
 
     tree_item<T>* get_item_at_line(int y);
 
@@ -34,7 +34,7 @@ protected:
     std::vector<tree_item<T>*> item_list;
 
 private:
-    std::vector<std::pair<int, std::function<bool (int, int)>>> input_functions;
+    std::vector<std::pair<int, std::function<bool (int)>>> input_functions;
     void draw_item(tree_item<T>* item, int depth);
 };
 
