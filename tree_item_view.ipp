@@ -1,14 +1,14 @@
 template <typename T>
 void tree_item_view<T>::refresh() {
-    move(0,0);
     wclear(win);
     item_list.clear();
     draw_item(root, 0);
+    move(0,0);
 }
 
 template <typename T>
 bool tree_item_view<T>::get_input() {
-    int ch = getch();
+    int ch = wgetch(win);
     int y, x;
     getyx(win, y, x);
     for (auto& f : input_functions) {
