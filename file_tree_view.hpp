@@ -24,4 +24,6 @@ private:
     WINDOW* main_window;
     int search_y;
     std::string search_string;
+
+    void search_tree();
 };

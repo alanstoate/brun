@@ -16,6 +16,8 @@ public:
     // Virtual functions to provide functionality
     std::string print_item(std::vector<int>& attribs) override;
     void on_select() override;
+
+    bool highlighted = false;
 };
 
 // Creates a root tree_item from a given path

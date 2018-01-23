@@ -14,6 +14,7 @@ void file_tree_view::add_input() {
     add_input_rule('/', [&] (int y) { 
             mode = Mode::SEARCH;
             search_y = y;
+            search_string.clear();
             wclear(search_window);
             waddch(search_window, '/');
             return true; 
@@ -47,15 +48,41 @@ bool file_tree_view::get_input() {
         if (ch == '\n') {
             wmove(main_window, search_y, 0);
             mode = Mode::NORMAL;
+            search_tree();
+            tree_item_view::refresh();
             return true;
-        }
-        else if (ch == '\b') {
-            search_string = search_string.substr(0 , search_string.size() - 1); 
         }
 
         search_string += ch;
-
         waddch(search_window, ch);
     }
     return true;
 }
+
+bool recursive_search(tree_item<fs::path>* node, std::string& search_string) {
+    bool found = false;
+    for (auto& c : node->get_children()) {
+        if (fs::is_directory(c->get_data())) {
+            if (recursive_search(c.get(), search_string)) {
+                c->folded = false; 
+                found = true;
+            }
+        }
+
+        // This feels dodgy may need to rethink structure
+        auto file_node = dynamic_cast<file_tree_item*>(c.get()); 
+        auto file_name = c->get_data().stem().string();
+        if (file_name.find(search_string) != std::string::npos) {
+            file_node->highlighted = true;
+            c->folded = false;
+            found = true;
+        }
+    }
+
+    return found;
+}
+
+void file_tree_view::search_tree() {
+    recursive_search(root, search_string);
+}
+
