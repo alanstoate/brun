@@ -22,11 +22,10 @@ void file_tree_item::on_select() {
 void read_dir(file_tree_item& n) {
     for (auto& d : fs::directory_iterator(n.get_data())) {
         auto node = std::make_unique<file_tree_item>(d.path());
-        auto& ref_node = *node;
-        n.add_child(std::move(node));
-
         if (fs::is_directory(d))
-            read_dir(ref_node);
+            read_dir(*node);
+
+        n.add_child(std::move(node));
     }
 }
 
