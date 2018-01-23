@@ -2,7 +2,11 @@
 
 file_tree_item::file_tree_item (fs::path n) : tree_item(n) {}
 
-std::string file_tree_item::print_item() {
+std::string file_tree_item::print_item(std::vector<int>& attribs) {
+    if (fs::is_directory(data))
+        attribs = {A_BOLD};
+    else
+        attribs = {};
     return data.stem().string() + data.extension().string();
 }
 

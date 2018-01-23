@@ -3,6 +3,7 @@
 #include "tree_item.hpp"
 #include <ncurses.h>
 #include <experimental/filesystem>
+#include <vector>
 
 namespace fs = std::experimental::filesystem;
 
@@ -13,7 +14,7 @@ public:
     file_tree_item (fs::path n);
 
     // Virtual functions to provide functionality
-    std::string print_item() override;
+    std::string print_item(std::vector<int>& attribs) override;
     void on_select() override;
 };
 

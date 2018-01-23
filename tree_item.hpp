@@ -26,7 +26,8 @@ public:
     // each tree
     
     // Value returned from this function will be printed on each line for each item
-    virtual std::string print_item() = 0;
+    // Custom attributes can be set with the attribs parameter
+    virtual std::string print_item(std::vector<int>& attribs) = 0;
     // Allows custom behaviour for selecting item
     virtual void on_select() = 0;
 

@@ -1,3 +1,5 @@
+#include "raii_attribs.hpp"
+
 template <typename T>
 void tree_item_view<T>::refresh() {
     wclear(win);
@@ -31,9 +33,16 @@ tree_item<T>* tree_item_view<T>::get_item_at_line(int y) {
 
 template <typename T>
 void tree_item_view<T>::draw_item(tree_item<T>* item, int depth) {
-    for (int i = 0; i < depth; ++i) wprintw(win, "  ");
-    wprintw(win, item->print_item().c_str());
-    wprintw(win, "\n");
+    for (int i = 0; i < depth; ++i)
+        wprintw(win, "  ");
+    std::vector<int> atts;
+    std::string output = item->print_item(atts);
+
+    { // Scoped atts
+        raii_attribs raii_atts(atts);
+        wprintw(win, output.c_str());
+        wprintw(win, "\n");
+    }
     item_list.push_back(item);
 
     if (!item->folded) {

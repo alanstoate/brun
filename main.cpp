@@ -24,8 +24,12 @@ int main(int argc, char *argv[]) {
     // Create root node and read directories into nodes
     auto root = file_tree_from_path(script_path); 
 
+    WINDOW* search_win;
+    WINDOW* main_win;
+    int h, w;
+
     // Init treeview
-    file_tree_view tree(root.get(), stdscr);
+    file_tree_view tree(root.get(), stdscr, search_win);
     tree.refresh();
 
     // Loop while input is recieved
