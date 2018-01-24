@@ -2,10 +2,8 @@
 
 namespace fs = std::experimental::filesystem;
 
-file_tree_view::file_tree_view (file_tree_item* ti, WINDOW* win, WINDOW* s_win) : 
-    tree_item_view(ti, win),
-    main_window(win),
-    search_window(s_win)
+file_tree_view::file_tree_view (file_tree_item* ti, WINDOW* win) :
+    tree_item_view(ti, set_dimensions(win))
 {
     add_input();
 }
@@ -86,3 +84,9 @@ void file_tree_view::search_tree() {
     recursive_search(root, search_string);
 }
 
+WINDOW* file_tree_view::set_dimensions(WINDOW* parent) {
+    getmaxyx(parent, height, width); 
+    main_window = newwin(height -1,width,0,0);
+    search_window = newwin(1,width,height-1,0);
+    return main_window;
+}
