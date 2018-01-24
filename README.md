@@ -21,3 +21,4 @@ To test brun on a linux system:
 
 ### Todo
 * Complete search functionality 
+* Get a real build system going 
