@@ -1,15 +1,14 @@
+#include "tree_item_view.hpp"
 #include "raii_attribs.hpp"
 
-template <typename T>
-void tree_item_view<T>::refresh() {
+void tree_item_view::refresh() {
     wclear(win);
     item_list.clear();
     draw_item(root, 0);
     wmove(win, 0,0);
 }
 
-template <typename T>
-bool tree_item_view<T>::get_input() {
+bool tree_item_view::get_input() {
     int ch = wgetch(win);
     int y, x;
     getyx(win, y, x);
@@ -21,18 +20,15 @@ bool tree_item_view<T>::get_input() {
 
 }
 
-template <typename T>
-void tree_item_view<T>::add_input_rule(int ch, std::function<bool (int)> func) {
+void tree_item_view::add_input_rule(int ch, std::function<bool (int)> func) {
     input_functions.push_back(std::make_pair(ch, func));
 }
 
-template <typename T>
-tree_item<T>* tree_item_view<T>::get_item_at_line(int y) {
+tree_item* tree_item_view::get_item_at_line(int y) {
     return item_list.at(y); 
 }
 
-template <typename T>
-void tree_item_view<T>::draw_item(tree_item<T>* item, int depth) {
+void tree_item_view::draw_item(tree_item* item, int depth) {
     for (int i = 0; i < depth; ++i)
         wprintw(win, "  ");
     std::vector<int> atts;
@@ -43,6 +39,7 @@ void tree_item_view<T>::draw_item(tree_item<T>* item, int depth) {
         wprintw(win, output.c_str());
         wprintw(win, "\n");
     }
+
     item_list.push_back(item);
 
     if (!item->folded) {

@@ -57,19 +57,20 @@ bool file_tree_view::get_input() {
     return true;
 }
 
-bool recursive_search(tree_item<fs::path>* node, std::string& search_string) {
+bool recursive_search(tree_item* node, std::string& search_string) {
     bool found = false;
     for (auto& c : node->get_children()) {
-        if (fs::is_directory(c->get_data())) {
+        // This feels dodgy may need to rethink structure
+        auto file_node = dynamic_cast<file_tree_item*>(c.get()); 
+
+        if (fs::is_directory(file_node->path)) {
             if (recursive_search(c.get(), search_string)) {
                 c->folded = false; 
                 found = true;
             }
         }
 
-        // This feels dodgy may need to rethink structure
-        auto file_node = dynamic_cast<file_tree_item*>(c.get()); 
-        auto file_name = c->get_data().stem().string();
+        auto file_name = file_node->path.stem().string();
         if (file_name.find(search_string) != std::string::npos) {
             file_node->highlighted = true;
             c->folded = false;

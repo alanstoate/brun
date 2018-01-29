@@ -8,7 +8,7 @@
 namespace fs = std::experimental::filesystem;
 
 // Derived from tree item
-class file_tree_item : public tree_item<fs::path>
+class file_tree_item : public tree_item
 {
 public:
     file_tree_item (fs::path n);
@@ -18,6 +18,9 @@ public:
     void on_select() override;
 
     bool highlighted = false;
+
+    fs::path path;
+private:
 };
 
 // Creates a root tree_item from a given path
