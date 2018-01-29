@@ -1,14 +1,14 @@
 #pragma once
 
 #include "tree_item.hpp"
-#include "tree_item_view.hpp"
+#include "tree_view.hpp"
 #include "file_tree_item.hpp"
 #include <experimental/filesystem>
 #include <ncurses.h>
 
 namespace fs = std::experimental::filesystem;
 
-class file_tree_view : public tree_item_view {
+class file_tree_view : public tree_view {
 public:
     // Create new file_tree_view that displays root_item in window provided
     file_tree_view (file_tree_item* root_item, WINDOW* win);

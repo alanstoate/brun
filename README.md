@@ -7,6 +7,7 @@ It features vi-like key bindings for navigating the directory.
 * j/k   - navigate up/down
 * l - select (open/close directory or run script)
 * / - enter search mode
+* q - quit
 
 ### Installation
 To test brun on a linux system:

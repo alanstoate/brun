@@ -1,14 +1,14 @@
-#include "tree_item_view.hpp"
+#include "tree_view.hpp"
 #include "raii_attribs.hpp"
 
-void tree_item_view::refresh() {
+void tree_view::refresh() {
     wclear(win);
     item_list.clear();
     draw_item(root, 0);
     wmove(win, 0,0);
 }
 
-bool tree_item_view::get_input() {
+bool tree_view::get_input() {
     int ch = wgetch(win);
     int y, x;
     getyx(win, y, x);
@@ -20,15 +20,15 @@ bool tree_item_view::get_input() {
 
 }
 
-void tree_item_view::add_input_rule(int ch, std::function<bool (int)> func) {
+void tree_view::add_input_rule(int ch, std::function<bool (int)> func) {
     input_functions.push_back(std::make_pair(ch, func));
 }
 
-tree_item* tree_item_view::get_item_at_line(int y) {
+tree_item* tree_view::get_item_at_line(int y) {
     return item_list.at(y); 
 }
 
-void tree_item_view::draw_item(tree_item* item, int depth) {
+void tree_view::draw_item(tree_item* item, int depth) {
     for (int i = 0; i < depth; ++i)
         wprintw(win, "  ");
     std::vector<int> atts;

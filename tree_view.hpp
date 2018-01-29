@@ -8,9 +8,9 @@
 
 // Object that takes a tree_item root and window and draws a tree in that 
 // window
-class tree_item_view {
+class tree_view {
 public:
-    tree_item_view(tree_item* r, WINDOW* w) :
+    tree_view(tree_item* r, WINDOW* w) :
         root(r),
         win(w)
     { }

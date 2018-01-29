@@ -3,7 +3,7 @@
 namespace fs = std::experimental::filesystem;
 
 file_tree_view::file_tree_view (file_tree_item* ti, WINDOW* win) :
-    tree_item_view(ti, set_dimensions(win))
+    tree_view(ti, set_dimensions(win))
 {
     add_input();
 }
@@ -39,7 +39,7 @@ void file_tree_view::add_input() {
 
 bool file_tree_view::get_input() {
     if (mode == Mode::NORMAL) {
-        return tree_item_view::get_input(); 
+        return tree_view::get_input(); 
     }
     else {
         int ch = wgetch(search_window);
@@ -47,7 +47,7 @@ bool file_tree_view::get_input() {
             wmove(main_window, search_y, 0);
             mode = Mode::NORMAL;
             search_tree();
-            tree_item_view::refresh();
+            tree_view::refresh();
             return true;
         }
 
