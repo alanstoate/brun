@@ -54,7 +54,7 @@ bool read_dir(file_tree_item& n) {
     return found_sh;
 }
 
-std::unique_ptr<file_tree_item> file_tree_from_path(const fs::path& n) {
+std::unique_ptr<file_tree_item> file_tree_item::file_tree_from_path(const fs::path& n) {
     auto root = std::make_unique<file_tree_item>(n);
     root->folded = false;
     read_dir(*root);

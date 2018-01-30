@@ -13,6 +13,9 @@ class file_tree_item : public tree_item
 public:
     file_tree_item (fs::path n);
 
+    // Creates a root tree_item from a given path
+    static std::unique_ptr<file_tree_item> file_tree_from_path(const fs::path& n);
+
     // Virtual functions to provide functionality
     std::string print_item(std::vector<int>& attribs) override;
     void on_select() override;
@@ -22,5 +25,3 @@ public:
     fs::path path;
 };
 
-// Creates a root tree_item from a given path
-std::unique_ptr<file_tree_item> file_tree_from_path(const fs::path& n);
