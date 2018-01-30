@@ -15,7 +15,7 @@ To test brun on a linux system:
 * clone this repository with ``` git clone https://github.com/alanstoate/brun.git ```
 * ``` cd brun ```
 * run ``` make ```
-* ```./brun /scripts ``` to display the test scripts directory (ensure that the scripts have correct permissions)
+* ```./brun ./scripts ``` to display the test scripts directory (ensure that the scripts have correct permissions)
 
 ### Requirements
 * gcc with c++17 support
