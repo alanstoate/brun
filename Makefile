@@ -1,2 +1,8 @@
+SRC_DIR := ./src
+INC_DIR := ./include
+SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp)
+CPPFLAGS := -lstdc++fs -lncurses 
+CXXFLAGS := -std=c++17
+
 all:
-	g++ -std=c++17 main.cpp file_tree_item.cpp file_tree_view.cpp tree_item.cpp tree_view.cpp -lstdc++fs -lncurses -o brun -g
+	g++ -I $(INC_DIR) $(SRC_FILES) $(CPPFLAGS) $(CXXFLAGS) -o brun
