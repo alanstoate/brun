@@ -38,4 +38,5 @@ private:
     WINDOW* set_dimensions(WINDOW* parent);
     int move_to_next_highlighted(int current_line);
     int move_to_prev_highlighted(int current_line);
+    void refresh_highlighted_lines();
 };

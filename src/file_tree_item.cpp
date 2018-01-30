@@ -6,8 +6,10 @@ file_tree_item::file_tree_item (fs::path n) : path(n) {}
 std::string file_tree_item::print_item(std::vector<int>& attribs) {
     if (fs::is_directory(path))
         attribs = {A_BOLD};
-    else if (highlighted)
+
+    if (highlighted)
         attribs.push_back(A_UNDERLINE);
+
     return path.stem().string() + path.extension().string();
 }
 

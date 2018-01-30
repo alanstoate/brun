@@ -44,6 +44,8 @@ void file_tree_view::add_input() {
     add_input_rule('l', [&] (int y) { 
             get_item_at_line(y)->on_select();
             refresh();
+            highlighted_lines.clear();
+            refresh_highlighted_lines();
             wmove(win, y,0);
             return true; 
         });
@@ -119,12 +121,7 @@ void file_tree_view::search_tree() {
     highlighted_lines.clear();
     recursive_search(root, search_string);
     refresh();
-    for (auto it = item_list.begin(); it != item_list.end(); ++it) {
-        // This feels dodgy may need to rethink structure (again)
-        auto file_node = dynamic_cast<file_tree_item*>(*it); 
-        if (file_node->highlighted)
-            highlighted_lines.push_back(it - item_list.begin());
-    }
+    refresh_highlighted_lines();
 }
 
 WINDOW* file_tree_view::set_dimensions(WINDOW* parent) {
@@ -147,4 +144,13 @@ int file_tree_view::move_to_prev_highlighted(int current) {
             [&] (int i) { return i < current; });
 
     return line != highlighted_lines.rend() ? *line : highlighted_lines.back();
+}
+
+void file_tree_view::refresh_highlighted_lines() {
+    for (auto it = item_list.begin(); it != item_list.end(); ++it) {
+        // This feels dodgy may need to rethink structure (again)
+        auto file_node = dynamic_cast<file_tree_item*>(*it); 
+        if (file_node->highlighted)
+            highlighted_lines.push_back(it - item_list.begin());
+    }
 }
