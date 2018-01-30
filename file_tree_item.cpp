@@ -1,4 +1,5 @@
 #include "file_tree_item.hpp"
+#include <algorithm>
 
 file_tree_item::file_tree_item (fs::path n) : path(n) {}
 
@@ -26,15 +27,22 @@ void file_tree_item::on_select() {
 // Helper recursive function used by file_tree_from_path below
 bool read_dir(file_tree_item& n) {
     bool found_sh = false;
-    for (auto& d : fs::directory_iterator(n.path)) {
-        auto node = std::make_unique<file_tree_item>(d.path());
-        if (fs::is_directory(d)) {
+
+    // sort paths
+    std::vector<fs::path> paths;
+    copy(fs::directory_iterator(n.path), fs::directory_iterator(), 
+            std::back_inserter(paths));
+    std::sort(paths.begin(), paths.end());
+
+    for (auto& p : paths) {
+        auto node = std::make_unique<file_tree_item>(p);
+        if (fs::is_directory(p)) {
             // Only include directories that contain scripts
             if (read_dir(*node)) {
                 n.add_child(std::move(node));
             }
         }
-        else if (d.path().extension().string() == ".sh") {
+        else if (p.extension().string() == ".sh") {
             n.add_child(std::move(node));
             found_sh = true;
         }
