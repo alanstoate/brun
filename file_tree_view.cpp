@@ -1,4 +1,5 @@
 #include "file_tree_view.hpp"
+#include <algorithm>
 
 namespace fs = std::experimental::filesystem;
 
@@ -35,6 +36,18 @@ void file_tree_view::add_input() {
             wmove(win, y,0);
             return true; 
         });
+    add_input_rule('n', [&] (int y) { 
+            if (!highlighted_lines.empty()) {
+                wmove(win, move_to_next_highlighted(y), 0);
+            }
+            return true; 
+        });
+    add_input_rule('N', [&] (int y) { 
+            if (!highlighted_lines.empty()) {
+                wmove(win, move_to_prev_highlighted(y), 0);
+            }
+            return true; 
+        });
 }
 
 bool file_tree_view::get_input() {
@@ -47,6 +60,7 @@ bool file_tree_view::get_input() {
             wmove(main_window, search_y, 0);
             mode = Mode::NORMAL;
             search_tree();
+            search_string.clear();
             tree_view::refresh();
             return true;
         }
@@ -57,7 +71,7 @@ bool file_tree_view::get_input() {
     return true;
 }
 
-bool recursive_search(tree_item* node, std::string& search_string) {
+bool file_tree_view::recursive_search(tree_item* node, std::string& search_string) {
     bool found = false;
     for (auto& c : node->get_children()) {
         // This feels dodgy may need to rethink structure
@@ -65,8 +79,11 @@ bool recursive_search(tree_item* node, std::string& search_string) {
 
         if (fs::is_directory(file_node->path)) {
             if (recursive_search(c.get(), search_string)) {
-                c->folded = false; 
+                file_node->folded = false; 
                 found = true;
+            }
+            else {
+                file_node->folded = true;
             }
         }
 
@@ -76,13 +93,23 @@ bool recursive_search(tree_item* node, std::string& search_string) {
             c->folded = false;
             found = true;
         }
+        else {
+            file_node->highlighted = false;
+        }
     }
 
     return found;
 }
 
 void file_tree_view::search_tree() {
+    highlighted_lines.clear();
     recursive_search(root, search_string);
+    refresh();
+    for (auto it = item_list.begin(); it != item_list.end(); ++it) {
+        auto file_node = dynamic_cast<file_tree_item*>(*it); 
+        if (file_node->highlighted)
+            highlighted_lines.push_back(it - item_list.begin());
+    }
 }
 
 WINDOW* file_tree_view::set_dimensions(WINDOW* parent) {
@@ -90,4 +117,18 @@ WINDOW* file_tree_view::set_dimensions(WINDOW* parent) {
     main_window = newwin(height -1,width,0,0);
     search_window = newwin(1,width,height-1,0);
     return main_window;
+}
+
+int file_tree_view::move_to_next_highlighted(int current) {
+    auto line = std::find_if(highlighted_lines.begin(), highlighted_lines.end(),
+            [&] (int i) { return i > current; });
+
+    return line != highlighted_lines.end() ? *line : highlighted_lines.front();
+}
+
+int file_tree_view::move_to_prev_highlighted(int current) {
+    auto line = std::find_if(highlighted_lines.rbegin(), highlighted_lines.rend(),
+            [&] (int i) { return i < current; });
+
+    return line != highlighted_lines.rend() ? *line : highlighted_lines.back();
 }

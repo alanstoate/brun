@@ -28,5 +28,10 @@ private:
 
     void add_input();
     void search_tree();
+    bool recursive_search(tree_item* node, std::string& str);
     WINDOW* set_dimensions(WINDOW* parent);
+    int move_to_next_highlighted(int current_line);
+    int move_to_prev_highlighted(int current_line);
+
+    std::vector<int> highlighted_lines;
 };

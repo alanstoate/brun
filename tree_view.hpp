@@ -27,6 +27,7 @@ public:
 
     tree_item* get_item_at_line(int y);
 
+
 protected:
     WINDOW* win;
     tree_item* root;
