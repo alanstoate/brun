@@ -7,7 +7,7 @@
 
 namespace fs = std::experimental::filesystem;
 
-// Derived from tree item
+// tree_item that contains a path
 class file_tree_item : public tree_item
 {
 public:
@@ -20,7 +20,6 @@ public:
     bool highlighted = false;
 
     fs::path path;
-private:
 };
 
 // Creates a root tree_item from a given path

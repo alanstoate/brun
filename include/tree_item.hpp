@@ -3,11 +3,11 @@
 #include <memory>
 #include <vector>
 
-// Type T represents the the data store in each node of the tree
+// Tree item that can be used in a tree_view
 class tree_item
 {
 public:
-    // Init tree item from instance of T 
+    // Constructor
     tree_item () {}
 
     // Adds a child to the tree
